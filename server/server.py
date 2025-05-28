@@ -1,7 +1,8 @@
+import os
+import asyncio
 import socketio
 from fastapi import FastAPI
 import uvicorn
-import asyncio
 import redis.asyncio as redis
 
 sio = socketio.AsyncServer(async_mode='asgi', cors_allowed_origins='*')
@@ -17,13 +18,16 @@ async def disconnect(sid):
     print(f'Client {sid} disconnected')
 
 async def redis_listener():
-    r = redis.Redis(host='localhost', port=6379)
+    r = redis.Redis(
+        host=os.getenv("REDIS_HOST", "redis"),          
+        port=int(os.getenv("REDIS_PORT", 6379)),       
+        decode_responses=True,
+    )
     pubsub = r.pubsub()
     await pubsub.subscribe('vehicle_data')
 
     async for msg in pubsub.listen():
         if msg['type'] == 'message':
-            print(f"🔁 Got from Redis: {msg['data']}")
             await sio.emit('update', {'speed': float(msg['data'])})
 
 @fastapi_app.on_event("startup")
