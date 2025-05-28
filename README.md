@@ -1,4 +1,3 @@
-````markdown
 # 🏎️  Real-Time ROS2 → Redis → Socket.IO → React Stack  
 
 > one-command telemetry pipeline
@@ -8,11 +7,11 @@
 ## TL;DR
 
 ```bash
-git clone <this-repo>
-cd <this-repo>
-docker compose build          # first time / whenever you change code
+git clone https://github.com/ibrahimsel/ros-redis-rt-dashboard.git
+cd ros-redis-rt-dashboard
+docker compose build          # first time or whenever you change code
 docker compose up -d          # open http://localhost:3000 after
-````
+```
 
 That’s it. No global Python, no Node mess, no ROS installation on your host.
 **Containerize or GTFO.**
